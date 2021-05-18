@@ -4,6 +4,7 @@ namespace SpriteKind {
     export const levelthreealien = SpriteKind.create()
     export const littleAliens = SpriteKind.create()
     export const boss = SpriteKind.create()
+    export const asteroidman = SpriteKind.create()
 }
 function colonizer () {
     tiles.setTilemap(tilemap`level1`)
@@ -157,49 +158,65 @@ sprites.onCreated(SpriteKind.levelonealien, function (sprite) {
     sprite.setVelocity(-90, 0)
     sprite.x = astronaut.x + 80
     sprite.y = randint(astronaut.y - 15, astronaut.y + 15)
+    list = []
+})
+scene.onOverlapTile(SpriteKind.boss, assets.tile`transparency16`, function (sprite, location) {
+    sprite.vx += -17
 })
 function level_2 () {
-    tiles.setTilemap(tilemap`level2`)
+    tiles.setTilemap(tilemap`level7`)
     info.setLife(11)
     lvl1 = false
     lvl2 = true
     lvl3 = false
-    tiles.placeOnRandomTile(astronaut, img`myTile8`)
 }
-scene.onOverlapTile(SpriteKind.Player, img`myTile7`, function (sprite, location) {
-    level_3()
-})
-scene.onOverlapTile(SpriteKind.Player, img`myTile3`, function (sprite, location) {
-    level_2()
-})
-scene.onOverlapTile(SpriteKind.Player, img`myTile16`, function (sprite, location) {
-    colonizer()
-})
-scene.onOverlapTile(SpriteKind.boss, img`myTile15`, function (sprite, location) {
-    sprite.vx += 17
-})
 sprites.onCreated(SpriteKind.leveltwoalien, function (sprite) {
     sprite.setVelocity(-90, 0)
     sprite.x = astronaut.x + 80
     sprite.y = randint(astronaut.y - 15, astronaut.y + 15)
 })
-scene.onOverlapTile(SpriteKind.boss, img`myTile14`, function (sprite, location) {
-    sprite.vx += -17
+scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sprite, location) {
+    level_3()
 })
 sprites.onCreated(SpriteKind.boss, function (sprite) {
-    tiles.placeOnRandomTile(sprite, img`myTile14`)
+    tiles.placeOnRandomTile(sprite, assets.tile`transparency16`)
 })
 function level_1 () {
-    tiles.setTilemap(tilemap`level1`)
+    tiles.setTilemap(tilemap`level5`)
     lvl1 = true
     lvl2 = false
     lvl3 = false
+    for (let index = 0; index < 11; index++) {
+        asteroid = sprites.create(img`
+            ........................................
+            ................ccccccccc...............
+            ............cccccccccccccccc..ccc.......
+            ..........ccbbbbccccbccccccccccccccc....
+            .........ccbbffbbcccbffbccccccccccccc...
+            .......cccbccffcbcccbbfbcccccccccccccc..
+            ......cccccbbfcfccccccccccccccccccbbccc.
+            ....ccccccccbbcccccccccccccbccccccbfbcc.
+            ...ccccccccccccccccccccccccbcbbfcbbffccc
+            .ccccccccccccccccccccccccbbbccbfcccfcccc
+            cccccccccccccccbbbbbcccccbffccccccccccc.
+            cccccccccbbcccbfffccccccbbfffccccccccc..
+            ccccccccbbbbbbbfffccccccbffffcccc.......
+            ccccccccbccfffffffcccccccbbbfccc........
+            ccccccccbbbcfffcffccccccccccccc.........
+            .cccccccccbbbbcbccccccccccccccc.........
+            ......cccccccbbcccccccccccccccc.........
+            ..........ccccccccccccccccccccc.........
+            ..................ccccccccccc...........
+            ........................................
+            `, SpriteKind.asteroidman)
+        tiles.placeOnRandomTile(asteroid, assets.tile`myTile5`)
+    }
 }
 function level_3 () {
     game.splash("dont let the big alien touch you twice, or you die.")
     game.splash("Get to the end and plant your flag")
     info.setLife(80)
-    tiles.setTilemap(tilemap`level3`)
+    tiles.setTilemap(tilemap`level6`)
     lvl1 = false
     lvl2 = false
     lvl3 = true
@@ -265,14 +282,16 @@ function level_3 () {
         ....................777777......77777.......................
         .....................77777.......7777.......................
         `, SpriteKind.boss)
-    tiles.placeOnRandomTile(astronaut, img`myTile8`)
 }
+let projectile: Sprite = null
 let alienlvltwo: Sprite = null
 let alienlvlone: Sprite = null
 let bossalien: Sprite = null
+let asteroid: Sprite = null
 let lvl3 = false
 let lvl2 = false
 let lvl1 = false
+let list: Sprite[] = []
 let jump = 0
 let astronaut: Sprite = null
 game.splash("dont touch the space lava or the aliens")
@@ -311,7 +330,7 @@ astronaut = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(astronaut, 100, 100)
 level_1()
-tiles.placeOnRandomTile(astronaut, img`myTile8`)
+tiles.placeOnRandomTile(astronaut, assets.tile`myTile4`)
 scene.cameraFollowSprite(astronaut)
 info.setLife(10)
 jump = 0
@@ -391,5 +410,15 @@ forever(function () {
 forever(function () {
     if (lvl3) {
         alienlvltwo.destroy()
+    }
+})
+game.onUpdateInterval(500, function () {
+    for (let value of list) {
+        projectile = sprites.createProjectileFromSprite(img`
+            4 4 4 4 
+            4 5 5 4 
+            4 5 5 4 
+            4 4 4 4 
+            `, value, astronaut.x - value.x, astronaut.y - value.y)
     }
 })
