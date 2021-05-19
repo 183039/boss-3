@@ -163,12 +163,47 @@ sprites.onCreated(SpriteKind.levelonealien, function (sprite) {
 scene.onOverlapTile(SpriteKind.boss, assets.tile`transparency16`, function (sprite, location) {
     sprite.vx += -17
 })
+function doSomething (col: number, row: number) {
+    asteroid = sprites.create(img`
+        ........................................
+        ................ccccccccc...............
+        ............cccccccccccccccc..ccc.......
+        ..........ccbbbbccccbccccccccccccccc....
+        .........ccbbffbbcccbffbccccccccccccc...
+        .......cccbccffcbcccbbfbcccccccccccccc..
+        ......cccccbbfcfccccccccccccccccccbbccc.
+        ....ccccccccbbcccccccccccccbccccccbfbcc.
+        ...ccccccccccccccccccccccccbcbbfcbbffccc
+        .ccccccccccccccccccccccccbbbccbfcccfcccc
+        cccccccccccccccbbbbbcccccbffccccccccccc.
+        cccccccccbbcccbfffccccccbbfffccccccccc..
+        ccccccccbbbbbbbfffccccccbffffcccc.......
+        ccccccccbccfffffffcccccccbbbfccc........
+        ccccccccbbbcfffcffccccccccccccc.........
+        .cccccccccbbbbcbccccccccccccccc.........
+        ......cccccccbbcccccccccccccccc.........
+        ..........ccccccccccccccccccccc.........
+        ..................ccccccccccc...........
+        ........................................
+        `, SpriteKind.asteroidman)
+    tiles.placeOnTile(asteroid, tiles.getTileLocation(col, row))
+}
 function level_2 () {
-    tiles.setTilemap(tilemap`level7`)
-    info.setLife(11)
-    lvl1 = false
-    lvl2 = true
+    tiles.setTilemap(tilemap`level5`)
+    lvl1 = true
+    lvl2 = false
     lvl3 = false
+    doSomething(11, 14)
+    doSomething(17, 18)
+    doSomething(28, 14)
+    doSomething(42, 18)
+    doSomething(8, 16)
+    doSomething(8, 16)
+    doSomething(8, 16)
+    doSomething(8, 16)
+    doSomething(8, 16)
+    doSomething(8, 16)
+    doSomething(8, 16)
 }
 sprites.onCreated(SpriteKind.leveltwoalien, function (sprite) {
     sprite.setVelocity(-90, 0)
@@ -181,36 +216,26 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sp
 sprites.onCreated(SpriteKind.boss, function (sprite) {
     tiles.placeOnRandomTile(sprite, assets.tile`transparency16`)
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.asteroidman, function (sprite, otherSprite) {
+    sprite.vy += -80
+})
 function level_1 () {
-    tiles.setTilemap(tilemap`level5`)
-    lvl1 = true
-    lvl2 = false
+    tiles.setTilemap(tilemap`level7`)
+    info.setLife(11)
+    lvl1 = false
+    lvl2 = true
     lvl3 = false
-    for (let index = 0; index < 11; index++) {
-        asteroid = sprites.create(img`
-            ........................................
-            ................ccccccccc...............
-            ............cccccccccccccccc..ccc.......
-            ..........ccbbbbccccbccccccccccccccc....
-            .........ccbbffbbcccbffbccccccccccccc...
-            .......cccbccffcbcccbbfbcccccccccccccc..
-            ......cccccbbfcfccccccccccccccccccbbccc.
-            ....ccccccccbbcccccccccccccbccccccbfbcc.
-            ...ccccccccccccccccccccccccbcbbfcbbffccc
-            .ccccccccccccccccccccccccbbbccbfcccfcccc
-            cccccccccccccccbbbbbcccccbffccccccccccc.
-            cccccccccbbcccbfffccccccbbfffccccccccc..
-            ccccccccbbbbbbbfffccccccbffffcccc.......
-            ccccccccbccfffffffcccccccbbbfccc........
-            ccccccccbbbcfffcffccccccccccccc.........
-            .cccccccccbbbbcbccccccccccccccc.........
-            ......cccccccbbcccccccccccccccc.........
-            ..........ccccccccccccccccccccc.........
-            ..................ccccccccccc...........
-            ........................................
-            `, SpriteKind.asteroidman)
-        tiles.placeOnRandomTile(asteroid, assets.tile`myTile5`)
-    }
+    doSomething(8, 16)
+    doSomething(19, 17)
+    doSomething(30, 16)
+    doSomething(38, 21)
+    doSomething(47, 22)
+    doSomething(52, 16)
+    doSomething(60, 21)
+    doSomething(66, 15)
+    doSomething(75, 20)
+    doSomething(83, 14)
+    doSomething(92, 19)
 }
 function level_3 () {
     game.splash("dont let the big alien touch you twice, or you die.")
@@ -287,10 +312,10 @@ let projectile: Sprite = null
 let alienlvltwo: Sprite = null
 let alienlvlone: Sprite = null
 let bossalien: Sprite = null
-let asteroid: Sprite = null
 let lvl3 = false
 let lvl2 = false
 let lvl1 = false
+let asteroid: Sprite = null
 let list: Sprite[] = []
 let jump = 0
 let astronaut: Sprite = null
@@ -329,11 +354,11 @@ astronaut = sprites.create(img`
     .........fffffffff............
     `, SpriteKind.Player)
 controller.moveSprite(astronaut, 100, 100)
-level_1()
 tiles.placeOnRandomTile(astronaut, assets.tile`myTile4`)
 scene.cameraFollowSprite(astronaut)
 info.setLife(10)
 jump = 0
+level_1()
 forever(function () {
     pause(4000)
     if (lvl1) {
