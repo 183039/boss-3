@@ -265,6 +265,7 @@ function level_2 () {
     tiles.setTilemap(tilemap`level35`)
     tiles.placeOnRandomTile(astronaut, assets.tile`myTile4`)
     info.setLife(8)
+    statusbar.value = 100
     lvl1 = false
     lvl2 = true
     lvl3 = false
@@ -455,6 +456,7 @@ function level_3 () {
     tiles.setTilemap(tilemap`level5`)
     tiles.placeOnRandomTile(astronaut, assets.tile`myTile4`)
     info.setLife(8)
+    statusbar.value = 100
     lvl1 = false
     lvl2 = false
     lvl3 = true
@@ -484,6 +486,7 @@ let alienlvlone: Sprite = null
 let ridehome: Sprite = null
 let jump = 0
 let list: Sprite[] = []
+let statusbar: StatusBarSprite = null
 let astronaut: Sprite = null
 tiles.setTilemap(tilemap`level31`)
 music.playMelody("C E B G - - - - ", 160)
@@ -526,7 +529,7 @@ astronaut = sprites.create(img`
     .........fffffffff............
     `, SpriteKind.Player)
 controller.moveSprite(astronaut, 100, 0)
-let statusbar = statusbars.create(20, 4, StatusBarKind.Health)
+statusbar = statusbars.create(20, 4, StatusBarKind.Health)
 statusbar.attachToSprite(astronaut)
 statusbar.setColor(7, 2)
 statusbar.value = 100
