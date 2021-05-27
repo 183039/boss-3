@@ -50,9 +50,6 @@ function earthtrip () {
 sprites.onOverlap(SpriteKind.levelonealien, SpriteKind.Projectile, function (sprite, otherSprite) {
     alienlvlone.destroy()
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.boss, function (sprite, otherSprite) {
-    info.changeLifeBy(-1)
-})
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     jump = 0
 })
@@ -74,6 +71,7 @@ sprites.onOverlap(SpriteKind.levelthreealien, SpriteKind.Projectile, function (s
 sprites.onOverlap(SpriteKind.Player, SpriteKind.levelonealien, function (sprite, otherSprite) {
     otherSprite.destroy()
     info.changeLifeBy(-1)
+    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, astronaut).value += -12.5
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile34`, function (sprite, location) {
     earthtrip()
@@ -84,6 +82,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile22`, function (sprite, 
 sprites.onOverlap(SpriteKind.Player, SpriteKind.leveltwoalien, function (sprite, otherSprite) {
     otherSprite.destroy()
     info.changeLifeBy(-1)
+    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, astronaut).value += -12.5
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (jump < 1) {
@@ -265,7 +264,7 @@ function level_2 () {
     list = []
     tiles.setTilemap(tilemap`level35`)
     tiles.placeOnRandomTile(astronaut, assets.tile`myTile4`)
-    info.setLife(5)
+    info.setLife(8)
     lvl1 = false
     lvl2 = true
     lvl3 = false
@@ -292,6 +291,7 @@ sprites.onOverlap(SpriteKind.leveltwoalien, SpriteKind.Projectile, function (spr
 sprites.onOverlap(SpriteKind.Player, SpriteKind.levelthreealien, function (sprite, otherSprite) {
     otherSprite.destroy()
     info.changeLifeBy(-1)
+    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, astronaut).value += -12.5
 })
 scene.onOverlapTile(SpriteKind.myride, assets.tile`myTile38`, function (sprite, location) {
     earth()
@@ -431,11 +431,7 @@ function earth () {
 function level_1 () {
     tiles.setTilemap(tilemap`level7`)
     tiles.placeOnRandomTile(astronaut, assets.tile`myTile4`)
-    statusbar = statusbars.create(20, 4, StatusBarKind.Health)
-    statusbar.attachToSprite(astronaut)
-    statusbar.value = 100
-    statusbar.setColor(7, 2)
-    info.setLife(5)
+    info.setLife(8)
     lvl1 = true
     lvl2 = false
     lvl3 = false
@@ -477,7 +473,6 @@ function level_3 () {
     doSomething(94, 23)
     doSomething(97, 16)
 }
-let statusbar: StatusBarSprite = null
 let alienlvltwo: Sprite = null
 let lvl3 = false
 let lvl2 = false
@@ -531,13 +526,14 @@ astronaut = sprites.create(img`
     .........fffffffff............
     `, SpriteKind.Player)
 controller.moveSprite(astronaut, 100, 0)
+let statusbar = statusbars.create(20, 4, StatusBarKind.Health)
+statusbar.attachToSprite(astronaut)
+statusbar.setColor(7, 2)
+statusbar.value = 100
 scene.cameraFollowSprite(astronaut)
 list = []
 jump = 0
-thief()
-forever(function () {
-	
-})
+level_1()
 forever(function () {
 	
 })
@@ -646,4 +642,7 @@ forever(function () {
             ...........444.444............
             `, SpriteKind.levelthreealien)
     }
+})
+forever(function () {
+	
 })
